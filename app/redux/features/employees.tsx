@@ -19,7 +19,7 @@ const initialState: EmployeesState = {
 
 // MiddleWare
 export function addEmployee(employee: Employee) {
-  return function (dispatch: AppDispatch, getState: AppGetState) {
+  return async function (dispatch: AppDispatch, getState: AppGetState) {
     const status = selectEmployees(getState()).status;
     if (status === "pending") {
       return;
