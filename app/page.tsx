@@ -1,6 +1,14 @@
+"use client";
+import { forwardRef, useState } from "react";
 import Link from "next/link";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Home() {
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+
   return (
     <main className="p-6">
       <div className="max-w-xs mx-auto">
@@ -33,14 +41,29 @@ export default function Home() {
             <label className="label" htmlFor="date-of-birth">
               Date of Birth
             </label>
-            <input id="date-of-birth" type="text" className="input" />
+            <DatePicker
+              id="date-of-birth"
+              className="input"
+              selected={dateOfBirth}
+              showMonthDropdown
+              showYearDropdown
+              onChange={(date: Date) => setDateOfBirth(date)}
+              maxDate={new Date()}
+            />
           </div>
 
           <div className="input-group">
             <label className="label" htmlFor="start-date">
               Start Date
             </label>
-            <input id="start-date" type="text" className="input" />
+            <DatePicker
+              id="start-date"
+              className="input"
+              selected={startDate}
+              showMonthDropdown
+              showYearDropdown
+              onChange={(date: Date) => setStartDate(date)}
+            />
           </div>
 
           <fieldset className="flex flex-col p-6 border border-gray-300">
