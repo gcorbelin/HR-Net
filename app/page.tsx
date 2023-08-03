@@ -1,13 +1,25 @@
 "use client";
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import DatePicker from "react-datepicker";
+import Select from "react-select";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { Department } from "./models/department";
+import departments from "./data/departments";
+import { State } from "./models/state";
+import states from "./data/states";
 
 export default function Home() {
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
+  const [departmentOption, setDepartmentOption] = useState<Department | null>(
+    null
+  );
+  const [stateOption, setStateOption] = useState<State | null>(null);
+
+  const departmentOptions = departments;
+  const stateOptions = states;
 
   return (
     <main className="p-6">
@@ -87,7 +99,14 @@ export default function Home() {
               <label className="label" htmlFor="state">
                 State
               </label>
-              <select name="state" id="state" className="input"></select>
+              <Select
+                name="state"
+                id="state"
+                className="mt-1"
+                value={stateOption}
+                options={stateOptions}
+                onChange={setStateOption}
+              />
             </div>
 
             <div className="input-group mb-0">
@@ -102,13 +121,14 @@ export default function Home() {
             <label className="label" htmlFor="department">
               Department
             </label>
-            <select name="department" id="department" className="input">
-              <option>Sales</option>
-              <option>Marketing</option>
-              <option>Engineering</option>
-              <option>Human Resources</option>
-              <option>Legal</option>
-            </select>
+            <Select
+              name="department"
+              id="department"
+              className="mt-1"
+              value={departmentOption}
+              options={departmentOptions}
+              onChange={setDepartmentOption}
+            />
           </div>
           <div className="flex flex-col items-center">
             <button
