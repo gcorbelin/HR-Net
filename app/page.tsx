@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
@@ -12,8 +12,9 @@ import { State } from "./models/state";
 import states from "./data/states";
 import { Employee } from "./models/employee";
 import { uniqueID } from "./utils/utils";
-import { addEmployee } from "./redux/features/employees";
+import { addEmployee, resetState } from "./redux/features/employees";
 import { selectEmployees, useAppSelector } from "./redux/selectors";
+import Modal from "./components/modal";
 
 export default function Home() {
   const [firstName, setFirstName] = useState("");
@@ -27,6 +28,9 @@ export default function Home() {
     null
   );
   const [stateOption, setStateOption] = useState<State | null>(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
   const departmentOptions = departments;
   const stateOptions = states;
@@ -55,6 +59,26 @@ export default function Home() {
     };
     dispatch(addEmployee(newEmployee));
   };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    dispatch(resetState());
+  };
+
+  useEffect(() => {
+    switch (employeesStore.status) {
+      case "resolved":
+        setModalContent("Employee Created!");
+        setIsOpen(true);
+        break;
+      case "rejected":
+        setModalContent("A problem occured.");
+        setIsOpen(true);
+        break;
+      default:
+        setModalContent("");
+    }
+  }, [employeesStore.status]);
 
   return (
     <main className="p-6">
@@ -209,6 +233,9 @@ export default function Home() {
           </div>
         </form>
       </div>
+      <Modal open={isOpen} onClose={handleClose}>
+        <p>{modalContent}</p>
+      </Modal>
     </main>
   );
 }

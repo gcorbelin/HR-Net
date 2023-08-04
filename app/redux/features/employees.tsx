@@ -32,12 +32,28 @@ export function addEmployee(employee: Employee) {
     //dispatch(actions.rejected(error));
   };
 }
+export function resetState() {
+  return async function (dispatch: AppDispatch, getState: AppGetState) {
+    const status = selectEmployees(getState()).status;
+    if (status === "pending") {
+      return;
+    }
+    dispatch(actions.reset());
+  };
+}
 
 // Slice
 const employees = createSlice({
   name: "employees",
   initialState,
   reducers: {
+    reset: (draft) => {
+      if (draft.status !== "pending") {
+        draft.error = null;
+        draft.status = "";
+      }
+      return;
+    },
     pending: (draft) => {
       if (draft.status === "rejected") {
         draft.error = null;
