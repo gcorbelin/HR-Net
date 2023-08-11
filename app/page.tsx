@@ -14,7 +14,7 @@ import { Employee } from "./models/employee";
 import { uniqueID } from "./utils/utils";
 import { addEmployee, resetState } from "./redux/features/employees";
 import { selectEmployees, useAppSelector } from "./redux/selectors";
-import Modal from "./components/modal";
+import { Modal } from "hr-net-ui";
 
 export default function Home() {
   const [firstName, setFirstName] = useState("");
