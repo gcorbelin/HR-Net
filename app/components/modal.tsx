@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import "./modal.css";
 
 export interface ModalProps {
@@ -23,16 +23,24 @@ export default function Modal({ open, onClose, children }: ModalProps) {
   }, [open]);
 
   // Handle 'Escape' key pressed
-  const handleEscape = function (event: KeyboardEvent) {
-    var key = event.code || event.which || event.keyCode;
+  const handleEscape = useCallback(
+    (event: KeyboardEvent) => {
+      var key = event.code || event.which || event.keyCode;
 
-    if ((key === "Escape" || key === 27) && open) {
-      handleClose();
-      event.stopPropagation();
-    }
-  };
+      if ((key === "Escape" || key === 27) && open) {
+        handleClose();
+        event.stopPropagation();
+      }
+    },
+    [handleClose, open]
+  );
   // Listen to keyup event
-  document.addEventListener("keyup", (event) => handleEscape(event));
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [handleEscape]);
 
   return (
     <div className={modalClassName} ref={modalRef}>
