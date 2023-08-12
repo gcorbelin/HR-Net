@@ -9,9 +9,18 @@ export interface ModalProps {
 
 export default function Modal({ open, onClose, children }: ModalProps) {
   const [modalClassName, setModalClassName] = useState("modal");
-  const handleClose = () => {
+  const handleCloseOutside = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if ((event.target as HTMLDivElement).classList.contains("modal")) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
+  const handleClose = useCallback(() => {
     onClose();
-  };
+  }, [onClose]);
 
   const modalRef = useRef(null);
 
@@ -43,7 +52,7 @@ export default function Modal({ open, onClose, children }: ModalProps) {
   }, [handleEscape]);
 
   return (
-    <div className={modalClassName} ref={modalRef}>
+    <div className={modalClassName} ref={modalRef} onClick={handleCloseOutside}>
       <div className="modal-content" role="dialog" aria-modal="true">
         {onClose && (
           <button className="modal-close" onClick={handleClose}>
