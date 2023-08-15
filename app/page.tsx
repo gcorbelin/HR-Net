@@ -134,6 +134,8 @@ export default function Home() {
               selected={dateOfBirth}
               showMonthDropdown
               showYearDropdown
+              yearDropdownItemNumber={60}
+              scrollableYearDropdown
               onChange={(date: Date) => setDateOfBirth(date)}
               maxDate={new Date()}
             />
@@ -149,6 +151,8 @@ export default function Home() {
               selected={startDate}
               showMonthDropdown
               showYearDropdown
+              yearDropdownItemNumber={60}
+              scrollableYearDropdown
               onChange={(date: Date) => setStartDate(date)}
             />
           </div>
